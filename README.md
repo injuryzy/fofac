@@ -1,6 +1,6 @@
 # fofac
 
-fofac 是对fofa api的一个封住，使用golang 编码,方便不同系统调用,通过查询的接口数据生成一个excel表格
+fofac 是对fofa api的一个封装，使用golang 编写,方便不同系统调用,通过查询的接口数据生成一个excel表格
 
 ## 用法
 
