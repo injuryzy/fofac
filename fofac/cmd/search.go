@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/injuryzy/fofac/fofac/fetch"
+
 	"github.com/injuryzy/fofac/fofac/log"
 	"github.com/spf13/cobra"
 )
@@ -36,9 +37,9 @@ var searchCmd = &cobra.Command{
 		var q string
 		for i, s := range query {
 			if i == len(query)-1 {
-				q += fmt.Sprintf("%s", s)
+				q += fmt.Sprintf(`%s`, s)
 			} else {
-				q += fmt.Sprintf("%s", s) + " && "
+				q += fmt.Sprintf(`%s`, s) + " && "
 			}
 		}
 		search := fetch.FofaSearch{
