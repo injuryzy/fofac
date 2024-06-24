@@ -21,6 +21,7 @@ var (
 	before       string
 	after        string
 	timeInterval int
+	fileName     string
 )
 
 // searchCmd represents the search command
@@ -52,6 +53,7 @@ var searchCmd = &cobra.Command{
 				Query:        q,
 				Before:       before,
 				After:        after,
+				FileName:     fileName,
 				TimeInterval: timeInterval,
 			},
 		}
@@ -81,6 +83,7 @@ func init() {
 	searchCmd.Flags().StringVarP(&before, "before", "b", "", "在此之前，不包括,时间格式 yyyy-MM-dd")
 	searchCmd.Flags().StringVarP(&after, "after", "a", "", "在此之后，不包括,时间格式 yyyy-MM-dd")
 	searchCmd.Flags().IntVarP(&timeInterval, "timeInterval", "t", 1, "查询时间间隔，单位为天，默认为1天")
+	searchCmd.Flags().StringVarP(&fileName, "filename", "d", "", "存储是的文件名")
 
 	// Here you will define your flags and configuration settings.
 

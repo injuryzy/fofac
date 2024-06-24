@@ -32,6 +32,7 @@ type FofaQuery struct {
 	Before       string
 	After        string
 	TimeInterval int
+	FileName     string
 }
 
 // QueryResp 接口请求相应
@@ -56,16 +57,15 @@ type FofaSearch struct {
 // 直接查询，返回结果输出
 func (f *FofaSearch) QueryResult() {
 	q := f.Query
-	if !(f.Before != "" && f.After != "") {
-		if f.Before != "" {
-			q += "&& before=" + f.Before
-		} else {
-			q += "&& after=" + f.After
-		}
+
+	if f.Before != "" {
+		q += "&& before=" + f.Before
+	} else if f.After != "" {
+		q += "&& after=" + f.After
 	}
 	base64Query := base64.StdEncoding.EncodeToString([]byte(q))
-	if f.Size >= 10000 {
-		log.Error("查询参数: %s, 查询条件大于10000条，没有查询完毕", q)
+	if f.Size > 10000 {
+		log.Error("查询参数: %s, 查询条件大于10000条，没有查询完毕,", q)
 		f.Size = 10000
 	}
 
@@ -83,7 +83,11 @@ func (f *FofaSearch) QueryResult() {
 	if err2 != nil {
 		log.Error("获取当前目录失败,%v", err)
 	}
-	fmt.Println(f.Before, f.After)
+
+	if f.FileName != "" {
+		excel.WriteXlsx(m, fmt.Sprintf("%s%s%s.xlsx", dir, string(os.PathSeparator), f.FileName))
+		return
+	}
 	//范围内的数据
 	if f.Before != "" && f.After != "" {
 		excel.WriteXlsx(m, fmt.Sprintf("%s%s%s-%s.xlsx", dir, string(os.PathSeparator), parse.Format(time.DateOnly), end))
@@ -135,6 +139,7 @@ func (f *FofaSearch) QueryT() {
 	}
 	if qSize > 10000 {
 		f.Size = 10000
+		log.Info("总条数：%d", qSize)
 	} else {
 		f.Size = qSize
 	}
